@@ -9,6 +9,8 @@ import salamander.standstill.demo.dto.AccesstokenDTO;
 import salamander.standstill.demo.dto.GithubUser;
 import salamander.standstill.demo.provider.GithubProvider;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class AuthorizeController {
 
@@ -26,7 +28,8 @@ public class AuthorizeController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code")String code,
-                           @RequestParam(name = "state")String state){
+                           @RequestParam(name = "state")String state,
+                            HttpServletRequest request){        //获取session
         System.out.println("salamander.standstill.demo.controller.AuthorizeController");
         System.out.println("code: "+code +"，state: "+state);
 
@@ -39,7 +42,15 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accesstokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
         System.out.println(user.getName());
-        return "index";
+
+        if(user!=null){
+            //登录成功
+            request.getSession().setAttribute("user",user);  //将user放入session
+            return "redirect:/";         //重定向到index页面，而不是简单的去除地址上的code
+        }else {
+            //登录失败
+            return "redirect:/";
+        }
     }
 }
 
