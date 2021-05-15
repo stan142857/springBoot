@@ -31,7 +31,9 @@ public class GithubProvider {
 
     public GithubUser getUser(String accessToken){
         System.out.println("salamander.standstill.demo.provider.GithubProvider.getUser");
-        System.out.println("  accessToken = "+accessToken);
+        System.out.println("  RealConOWN = https://api.github.com/user?access_token=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");
+        System.out.println("  RealConALL = https://api.github.com/user/repos?access_token=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");
+        System.out.println("  TestCon = https://api.github.com/user?access_token="+accessToken);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user")
