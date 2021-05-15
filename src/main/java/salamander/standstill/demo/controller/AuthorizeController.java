@@ -11,7 +11,9 @@ import salamander.standstill.demo.mapper.UserMapper;
 import salamander.standstill.demo.model.User;
 import salamander.standstill.demo.provider.GithubProvider;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -35,7 +37,8 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code")String code,
                            @RequestParam(name = "state")String state,
-                            HttpServletRequest request){        //获取session
+                           HttpServletRequest request,  //获取session
+                           HttpServletResponse response){ //保存Cookie
         System.out.println("salamander.standstill.demo.controller.AuthorizeController");
         System.out.println("code: "+code +"，state: "+state);
 
@@ -50,16 +53,18 @@ public class AuthorizeController {
         System.out.println(githubUser.getName());
 
         if(githubUser!=null){
+            //登录成功
             User user = new User();
-            user.setTOKEN(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setTOKEN(token);
             user.setNAME(githubUser.getName());
             user.setACCOUNT_ID(String.valueOf(githubUser.getId()));
             user.setGMT_CREATE(System.currentTimeMillis());
             user.setGMT_MODIFIED(user.getGMT_CREATE());
             userMapper.insert(user);
 
-            //登录成功
-            request.getSession().setAttribute("user",githubUser);  //将user放入session
+            response.addCookie(new Cookie("token",token));
+            //request.getSession().setAttribute("user",githubUser);  //将user放入session
             return "redirect:/";         //重定向到index页面，而不是简单的去除地址上的code
         }else {
             //登录失败
