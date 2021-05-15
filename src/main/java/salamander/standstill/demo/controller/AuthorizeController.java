@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import salamander.standstill.demo.dto.AccesstokenDTO;
 import salamander.standstill.demo.dto.GithubUser;
+import salamander.standstill.demo.mapper.UserMapper;
+import salamander.standstill.demo.model.User;
 import salamander.standstill.demo.provider.GithubProvider;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
@@ -26,6 +29,9 @@ public class AuthorizeController {
     @Value("${github.Redirect.uri}")
     private String Redirect_uri;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code")String code,
                            @RequestParam(name = "state")String state,
@@ -40,12 +46,20 @@ public class AuthorizeController {
         accesstokenDTO.setRedirect_uri(Redirect_uri);
         accesstokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accesstokenDTO);
-        GithubUser user = githubProvider.getUser(accessToken);
-        System.out.println(user.getName());
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+        System.out.println(githubUser.getName());
 
-        if(user!=null){
+        if(githubUser!=null){
+            User user = new User();
+            user.setTOKEN(UUID.randomUUID().toString());
+            user.setNAME(githubUser.getName());
+            user.setACCOUNT_ID(String.valueOf(githubUser.getId()));
+            user.setGMT_CREATE(System.currentTimeMillis());
+            user.setGMT_MODIFIED(user.getGMT_CREATE());
+            userMapper.insert(user);
+
             //登录成功
-            request.getSession().setAttribute("user",user);  //将user放入session
+            request.getSession().setAttribute("user",githubUser);  //将user放入session
             return "redirect:/";         //重定向到index页面，而不是简单的去除地址上的code
         }else {
             //登录失败

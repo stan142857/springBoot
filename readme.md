@@ -18,6 +18,9 @@
 ## 参考网站
 - https://elasticsearch.cn/explore
 
+## 资料
+- [spring官网资料](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-embedded-database-support)
+- [spring boot mybatis外网](https://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 ## 时序图
 
 ![image-20210513174405000](readme.assets/image-20210513174405000.png)
