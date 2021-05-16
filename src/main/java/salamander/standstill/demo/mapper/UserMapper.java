@@ -12,7 +12,7 @@ import javax.annotation.security.PermitAll;
 @Repository
 @Mapper
 public interface UserMapper {
-    @Insert("insert into user (ACCOUNT_ID,NAME,TOKEN,GMT_CREATE,GMT_MODIFIED) values (#{ACCOUNT_ID},#{NAME},#{TOKEN},#{GMT_CREATE},#{GMT_MODIFIED})")
+    @Insert("insert into user (ACCOUNT_ID,NAME,TOKEN,GMT_CREATE,GMT_MODIFIED,avatar_url) values (#{ACCOUNT_ID},#{NAME},#{TOKEN},#{GMT_CREATE},#{GMT_MODIFIED},#{avatar_url})")
     void insert(User user);
 
     @Select("select * from user where TOKEN=#{TOKEN}")

@@ -9,11 +9,11 @@
   - [配置说明](https://docs.github.com/en/developers/apps/authorizing-oauth-apps) 
   - [oauth个人配置](https://github.com/settings/applications/1622583)
 - [okhttp](https://square.github.io/okhttp/)
+- [Lombok](https://projectlombok.org/features/all)
 
 ## 工具
 - [git](https://git-scm.com/download)
 - [visual-paradigm](https://www.visual-paradigm.com)
-
 
 ## 参考网站
 - https://elasticsearch.cn/explore
