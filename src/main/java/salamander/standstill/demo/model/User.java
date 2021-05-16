@@ -3,18 +3,18 @@ package salamander.standstill.demo.model;
 import okhttp3.internal.Internal;
 
 public class User {
-    private Internal ID;
+    private int ID;
     private String ACCOUNT_ID;
     private String NAME;
     private String TOKEN;
     private Long GMT_CREATE;
     private Long GMT_MODIFIED;
 
-    public Internal getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(Internal ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
